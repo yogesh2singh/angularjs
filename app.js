@@ -300,6 +300,27 @@ app.controller('MainCtrl', ['$scope', function ($scope) {
 ];
 
 $scope.myData = angular.copy($scope.myAllData);
+ $scope.columns = [{ field: 'firstName' }, { field: 'lastName' }, { field: 'company' }, { field: 'employed' }];
+  $scope.gridOptions = {
+    enableSorting: true,
+    columnDefs: $scope.columns,
+    onRegisterApi: function(gridApi){$scope.gridApi = gridApi}
+  };
+
+  $scope.gridOptions.data = $scope.myAllData;
+
+
+$scope.setGridHeight = function()
+{
+	setTimeout(function(){
+		var newHeight = screen.availHeight;
+		newHeight = newHeight-130;
+		//alert("newHeight"+newHeight);
+		angular.element(document.getElementById('grid1')).css('height', newHeight + 'px');
+		angular.element(document.getElementsByClassName('ui-grid-render-container-body')).css('height', newHeight + 'px');
+		$scope.gridApi.core.refresh();
+	},500);
+}
 
 $scope.exportAllData = function()
 {
@@ -384,4 +405,6 @@ $scope.JSONToCSVConvertor = function(JSONData, ReportTitle, ShowLabel)
   link.click();
   document.body.removeChild(link);
 }
+
+$scope.setGridHeight();
 }]);
